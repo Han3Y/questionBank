@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="password" id="passwordTest">
+<input type="text" id="inputTest">
+</body>
+<script type="text/javascript">
+    let caps = null;
+    document.querySelector('#passwordTest').addEventListener('click', function (e){
+      if (e.getModifierState('CapsLock')) {
+        caps = true;
+        console.log('大写锁定--已开启');
+      } else {
+        caps = false;
+        console.log('大写锁定--未开启');
+      }
+    });
+    document.querySelector('#inputTest').addEventListener('click', function (e){
+      if (e.getModifierState('CapsLock')) {
+        caps = true;
+        console.log('大写锁定--已开启');
+      } else {
+        caps = false;
+        console.log('大写锁定--未开启');
+      }
+    });
+    // document.querySelector('#inputTest').addEventListener('keydown', function (e){
+    //   if (e.getModifierState('CapsLock')) {
+    //     caps = true;
+    //     console.log('大写锁定--已开启');
+    //   } else {
+    //     caps = false;
+    //     console.log('大写锁定--未开启');
+    //   }
+    // });
+    document.addEventListener('keydown', function(e) {
+      if (e.getModifierState('CapsLock')) {
+        caps = true;
+        console.log('大写锁定--已开启');
+      } else {
+        caps = false;
+        console.log('大写锁定--未开启');
+      }
+    });
+</script>
+</html>

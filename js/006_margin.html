@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>边界合并和边界溢出</title>
+    <style>
+        .group-1-1{
+            margin-bottom: 20px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-1-2{
+            margin-top: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-2-1{
+            margin-bottom: 20px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-2-2{
+            margin-top: -10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-3-1{
+            margin-bottom: 20px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-3-2{
+            margin-top: -30px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-4-1{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-4-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-5-1{
+            display: inline-block;
+            margin-bottom: 10px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-5-2{
+            margin-top: 20px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-6-1{
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-6-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-7-1{
+            margin-bottom: 10px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-7-2{
+            float: left;
+            margin-top: 20px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-8-1{
+            float: left;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-8-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-9-1{
+            margin-bottom: 10px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-9-2{
+            position: absolute;
+            margin-top: 20px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-10-1{
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-10-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-11-1{
+            width: 100px;
+            height: 100px;
+            background: red;
+            overflow: auto; /** 或者hidden**/
+        }
+        .group-11-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-12-1{
+            width: 100px;
+            height: 100px;
+            background: red;
+            border: 1px solid black; /**只设置一边border无效**/
+        }
+        .group-12-2{
+            margin-top: 20px;
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+        .group-13-1{
+            padding-top: 20px;
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+        .group-13-2{
+            margin-left: 10px;
+            width: 100px;
+            height: 100px;
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+<h2>边界合并</h2>
+<p> 1.边界合并只出现在块级元素中，并且只会在上下边距出现<br>
+    2.块级元素垂直上下边距相遇，取较大的值<br>
+    3.如果出现负边距，这么两个元素的边距就是上下边距带符号的和，如果负边距的绝对值大于正边距，
+    就会出现重叠，后面的元素叠在前面的元素上</p>
+
+<p>
+    BFC(Block formatting Context) 块级格式化上下文，布局规则如下：
+    1.内部的盒子会在垂直方向，一个一个地放置；
+    2.盒子垂直方向的距离由margin决定，属于同一个BFC的两个相邻Box的上下margin会发生重叠；
+    3.每个元素的左边，与包含的盒子的左边相接触，即使存在浮动也是如此；
+    4.BFC的区域不会与float重叠；
+    5.BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素，反之也是如此；
+    6.计算BFC的高度时，浮动元素也参与计算。
+
+    怎样会触发BFC？
+    1.根元素；
+    2.float的属性不为none；
+    3.position为absolute或fixed；
+    4.display为inline-block，table-cell，table-caption，flex；
+    5.overflow不为visible
+</p>
+<h3>①上下元素垂直上下边距相遇，取较大的值</h3>
+<div>
+    <div class="group-1-1"></div>
+    <div class="group-1-2"></div>
+</div>
+<h3>②如果出现负边距，这么两个元素的边距就是上下边距带符号的和</h3>
+<div>
+    <div class="group-2-1"></div>
+    <div class="group-2-2"></div>
+</div>
+<h3>③如果负边距的绝对值大于正边距， 就会出现重叠，后面的元素叠在前面的元素上</h3>
+<div>
+    <div class="group-3-1"></div>
+    <div class="group-3-2"></div>
+</div>
+<h2>边界溢出</h2>
+<p>边界溢出是指父级元素没有设置盒子属性时，子级元素的上边距会超出该父级元素。</p>
+<div>
+    <div class="group-4-1">
+        <div class="group-4-2"></div>
+    </div>
+</div>
+<h2>修改方法</h2>
+<h3>①设置成display:inline-block</h3>
+<div>
+    <div class="group-5-1"></div>
+    <div class="group-5-2"></div>
+</div>
+<br>
+<div>
+    <div class="group-6-1">
+        <div class="group-6-2"></div>
+    </div>
+</div>
+<h3>②设置float</h3>
+<div>
+    <div class="group-7-1"></div>
+    <div class="group-7-2"></div>
+</div>
+<br>
+<div>
+    <div class="group-8-1">
+        <div class="group-8-2"></div>
+    </div>
+</div>
+<h3 style="clear: both">③设置position:absolute</h3>
+<div>
+    <div class="group-9-1"></div>
+    <div class="group-9-2"></div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+    <div class="group-10-1">
+        <div class="group-10-2"></div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h3 >④外层元素设置overflow（不为visible）</h3>
+<div>
+    <div class="group-11-1">
+        <div class="group-11-2"></div>
+    </div>
+</div>
+<h3 >⑤父元素设置border</h3>
+<div>
+    <div class="group-12-1">
+        <div class="group-12-2"></div>
+    </div>
+</div>
+<h3>⑥父元素设置padding代替</h3>
+<div>
+    <div class="group-13-1">
+        <div class="group-13-2"></div>
+    </div>
+</div>
+</body>
+</html>
