@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .infinite-list-container{
+            position: relative;
+            width: 200px;
+            height: 300px;
+            border: 1px solid #333;
+            overflow: auto;
+        }
+        .infinite-list{
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+        .infinite-list-item{
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-bottom: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<!-- https://www.cnblogs.com/cangqinglang/p/12341362.html  -->
+<div class="infinite-list-container">
+    <div class="infinite-list-phantom"></div>
+    <div class="infinite-list">
+        <!-- item-1 -->
+        <!-- item-2 -->
+        <!-- ...... -->
+        <!-- item-n -->
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    /**
+     *
+     * 高度固定
+     */
+
+    // let screenHeight = 300; // 容器高度
+    // let itemCount = 10000; // 列表项的数量
+    // let itemSize = 30; // 每一项高度
+    // let visibleCount = Math.ceil(screenHeight / itemSize); // 可显示列表项数
+    // let startOffset = 0;  //偏移量
+    // let start = 0;  //起始索引
+    // let end = null; //结束索引
+    // let data = [];
+    // let listPhantom = document.querySelector('.infinite-list-phantom'); // 为容器内的占位，高度为总列表高度，用于形成滚动条
+    // let listContainer = document.querySelector('.infinite-list-container');
+    // let list = document.querySelector('.infinite-list');
+    // for(let i = 0 ; i < itemCount; i++){
+    //     data.push({
+    //         index: i,
+    //         height: Math.round(Math.random()* 30 + 120) // 生成随机高度 30px - 120px
+    //     });
+    // };
+    // // 占位符容器高度
+    // listPhantom.style.height = itemSize * itemCount + 'px';
+    // // 展示初始项数
+    // let initStr = '';
+    // for(let i = 0; i < Math.min(visibleCount, data.length); i ++){
+    //     initStr = initStr + `<div class="infinite-list-item">item-${data[i].index}</div>`;
+    // }
+    // list.innerHTML = initStr;
+    //
+    // listContainer.addEventListener('scroll', function (e){
+    //     let scrollTop = e.target.scrollTop;
+    //     start = Math.floor(scrollTop / itemSize);
+    //     end = start + visibleCount;
+    //     startOffset = scrollTop - (scrollTop % itemSize);
+    //
+    //     let visibleItems = data.slice(start, Math.min(end, data.length));
+    //     list.innerHTML = '';
+    //     let str = '';
+    //     for(let i = 0; i < visibleItems.length; i ++){
+    //         str = str + `<div class="infinite-list-item">item-${visibleItems[i].index}</div>`;
+    //     }
+    //     list.innerHTML = str;
+    //     list.style.transform = `translate(0, ${startOffset}px)`;
+    // });
+
+    /**
+     *
+     * 高度不固定
+     */
+
+    let screenHeight = 300; // 容器高度
+    let itemCount = 10000; // 列表项的数量
+    let estimatedItemSize = 100; // 预估内容高度
+
+
+    let itemSize = 30; // 每一项高度
+    let visibleCount = Math.ceil(screenHeight / itemSize); // 可显示列表项数
+    let startOffset = 0;  //偏移量
+    let start = 0;  //起始索引
+    let end = null; //结束索引
+    let data = []; // 数据
+    let positions = []; // 对数据大小及位置的缓存
+    let listPhantom = document.querySelector('.infinite-list-phantom'); // 为容器内的占位，高度为总列表高度，用于形成滚动条
+    let listContainer = document.querySelector('.infinite-list-container');
+    let list = document.querySelector('.infinite-list');
+    for(let i = 0 ; i < itemCount; i++){
+        data.push({
+            index: i,
+            height: Math.round(Math.random()* 30 + 120) // 生成随机高度 30px - 120px
+        });
+        positions.push({
+            height: estimatedItemSize,
+            top: i * estimatedItemSize, // 上边框离顶部距离
+            bottom: i * estimatedItemSize // 下边框离顶部距离
+        });
+    };
+    // 占位符容器高度
+    listPhantom.style.height = positions[positions.length - 1].bottom + 'px';
+    // 展示初始项数
+    let initStr = '';
+    for(let i = 0; i < Math.min(visibleCount, data.length); i ++){
+        initStr = initStr + `<div class="infinite-list-item" style="height: ${data[i].height}px">item-${data[i].index}</div>`;
+        positions[i]
+    }
+    list.innerHTML = initStr;
+
+    listContainer.addEventListener('scroll', function (e){
+        let scrollTop = e.target.scrollTop;
+        start = Math.floor(scrollTop / itemSize);
+        end = start + visibleCount;
+        startOffset = scrollTop - (scrollTop % itemSize);
+
+        let visibleItems = data.slice(start, Math.min(end, data.length));
+        list.innerHTML = '';
+        let str = '';
+        for(let i = 0; i < visibleItems.length; i ++){
+            str = str + `<div class="infinite-list-item" style="height: ${data[i].height}px">item-${visibleItems[i].index}</div>`;
+        }
+        list.innerHTML = str;
+        list.style.transform = `translate(0, ${startOffset}px)`;
+    });
+
+</script>
+</body>
+</html>
