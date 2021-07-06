@@ -5,6 +5,37 @@
 
  你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。
  */
-function f1() {
 
+
+/**
+ * 模拟判断哪个版本是错误版本
+ * @param n
+ * @returns {boolean}
+ */
+function isBadVersion(n){
+    if(n >= 3){
+        return true;
+    }else {
+        return false;
+    }
 }
+
+
+function f1(isBadVersion) {
+    return function (n){
+        let left = 1;
+        let right = n;
+        while (left < right){
+            let middle = parseInt((left + right) / 2 );
+            if(isBadVersion(middle)){
+                right = middle;
+            }else{
+                left = middle + 1;
+            }
+        }
+        return left;
+    }
+}
+
+let func = f1(isBadVersion);
+console.log(func(10));
