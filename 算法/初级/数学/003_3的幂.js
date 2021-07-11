@@ -4,6 +4,14 @@
  整数 n 是 3 的幂次方需满足：存在整数 x 使得 n == 3x
 
  */
-function f1(n) {
 
+function f1(n) {
+    if(n < 1){
+        return false;
+    }
+    while (n % 3 === 0){
+        n = n / 3;
+    }
+
+    return n === 1;
 }
