@@ -1,0 +1,2 @@
+-webkit-font-smoothing 在window 系统下没有起作用，但是在IOS 设备上起作用
+-webkit-font-smoothing：antialiased 是最佳的，灰度平滑。
