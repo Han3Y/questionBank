@@ -18,7 +18,7 @@ const throttleHandle = throttle(handle, 1000);
 throttleHandle();
 throttleHandle();
 
-// 第一次立即执行
+// 第一次不立即执行
 function throttle2(fn, interval) {
     let timer = null;
     return function () {
@@ -29,7 +29,7 @@ function throttle2(fn, interval) {
             timer = setTimeout(function () {
                 fn.apply(that, args);
                 timer = null;
-            }, 1000);
+            }, interval);
         }
     }
 }

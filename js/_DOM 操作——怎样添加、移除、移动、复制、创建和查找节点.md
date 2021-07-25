@@ -1,0 +1,11 @@
+（1）创建新节点
+createDocumentFragment(node);createElement(node);createTextNode(text);
+（2）添加、移除、替换、插入
+appendChild(node)removeChild(node)replaceChild(new,old)insertBefore(new,old
+)
+（3）查找
+getElementById();getElementsByName();getElementsByTagName();getElementsByCl
+assName();querySelector();querySelectorAll();
+（4）属性操作
+getAttribute(key);setAttribute(key,
+value);hasAttribute(key);removeAttribute(key);
