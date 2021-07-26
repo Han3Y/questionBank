@@ -25,7 +25,7 @@ Function.prototype.myBind = function (context) {
             } else {
                 console.log('222');
             }
-            return that.apply(this instanceof fn && context ? this : context, args.concat([...arguments]));
+            return that.apply(this instanceof fn ? this : context, args.concat([...arguments]));
         };
     console.log('that:', that);
     fn.prototype = this.prototype;
