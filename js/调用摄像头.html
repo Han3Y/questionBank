@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>调用摄像头测试</title>
+</head>
+<body>
+
+<div class="camera-box">
+    <div class="camera-item">
+        <video id="photo-video" width="1000" height="450" muted="muted"></video>
+        <canvas id="canvas" width="576" height="434"></canvas>
+        <div class="camera-btns">
+            <button class="k-button cancel-btn" id="cancelPhoto">取消</button>
+            <button class="k-button k-primary" id="takePhoto">拍照</button>
+            <button class="k-button k-primary" id="restorePhoto" style="display: none">重拍</button>
+            <button class="k-button k-primary" id="uploadPhoto" style="display: none">完成</button>
+        </div>
+    </div>
+</div>
+
+<button id="openCamera">打开摄像头</button>
+<button id="closeCamera">关闭摄像头</button>
+
+<script type="text/javascript">
+  let canvas = document.getElementById('canvas');
+  let context = canvas.getContext('2d');
+  let videoPhoto = document.getElementById('photo-video');
+  let mediaStreamTrack = null;
+  let mediaRecorder,recorderFile;
+  let stopCallBack = null;
+  let chunks = [];
+  navigator.getUserMedia  = navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia;
+
+  /**
+   * 打开摄像头
+   */
+  document.getElementById('openCamera').addEventListener('click', function (){
+      getDevices('xx').then( container => {
+        var constraints = container;
+        if(!navigator.getUserMedia){
+          alert("无法连接摄像头，请在设备上使用该功能。");
+          return;
+        }
+        navigator.getUserMedia(constraints, function (stream) {
+          // $('.camera-box').show();
+          // $('#avi-box').hide();
+          // $('#photo-box').show();
+          mediaStreamTrack = stream;
+          videoPhoto.srcObject = stream;
+          videoPhoto.play();
+          videoPhoto.onerror = function () {
+            if(mediaStreamTrack.stop){
+              mediaStreamTrack.stop();
+            }else{
+              for(let i = 0;i < mediaStreamTrack.getTracks().length;i++){
+                mediaStreamTrack.getTracks()[i].stop();
+              }
+            }
+          };
+          videoPhoto.onloadedmetadata = function () {
+            console.log('open success');
+          }
+        }, function (err) {
+          alert("连接异常，请检查摄像头连接状态2。");
+        });
+      });
+  });
+
+  /**
+   * 拍照
+   */
+  document.getElementById('takePhoto').addEventListener('click', function (){
+    context.drawImage(videoPhoto, 0, 0, 576, 434);
+  });
+
+  /**
+   * 关闭摄像头
+   */
+  document.getElementById('closeCamera').addEventListener('click', function (){
+    closeStream(mediaStreamTrack);
+    videoPhoto.srcObject = null;
+    context.clearRect(0,0, 576, 434);
+  });
+
+  /**
+   * 获取摄像头
+   * @param labelInfo
+   * @returns {Promise<unknown>}
+   */
+  getDevices = async function (labelInfo) {
+    let constraints = {
+      video:{},
+      // audio:{}
+    };
+    let deviceInfos;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+      console.log("不支持视频和音频设备.");
+      return;
+    }
+    deviceInfos = await navigator.mediaDevices.enumerateDevices();
+    console.log(deviceInfos);
+    // 遍历所有的设备，包括视频和音频设备。 找出 RGB相机设备
+    function gotDevices(deviceInfos) {
+      for (var i = 0; i !== deviceInfos.length; ++i) {
+        var deviceInfo = deviceInfos[i];
+        if (deviceInfo.kind === 'videoinput') {
+          // if (deviceInfo.label.search(labelInfo.videoLabel) !== -1) {
+            constraints.video = {
+              deviceId: deviceInfo.deviceId
+            };
+          // }
+        }
+        // if (deviceInfo.kind === 'audioinput') {
+        //   // if (deviceInfo.label.search(labelInfo.audioLabel) !== -1) {
+        //     constraints.audio = {
+        //       deviceId: deviceInfo.deviceId
+        //     };
+        //   // }
+        // }
+      }
+    }
+    if(deviceInfos && deviceInfos.length){
+      gotDevices(deviceInfos);
+    }else{
+      alert('连接异常，请检查摄像头连接状态1。');
+    }
+
+    return new Promise((resolve, reject) => {
+      resolve(constraints);
+
+    });
+  };
+
+  /**
+   * 关闭摄像头输入流
+   */
+  closeStream = function (mediaStreamTrack) {
+    if (typeof mediaStreamTrack.stop === 'function') {
+      mediaStreamTrack.stop();
+    }
+    else {
+      let trackList = [mediaStreamTrack.getAudioTracks(), mediaStreamTrack.getVideoTracks()];
+      for (let i = 0; i < trackList.length; i++) {
+        let tracks = trackList[i];
+        if (tracks && tracks.length > 0) {
+          for (let j = 0; j < tracks.length; j++) {
+            let track = tracks[j];
+            if (typeof track.stop === 'function') {
+              track.stop();
+            }
+          }
+        }
+      }
+    }
+  }
+
+</script>
+</body>
+</html>
