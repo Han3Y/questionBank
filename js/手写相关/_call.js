@@ -17,8 +17,9 @@ Function.prototype.myCall = function (context) {
   context = context || window;
   let args = [...arguments].slice(1),
       result = null;
-  context.fn = this;
-  result = context.fn(...args);
-  delete context.fn;
+  let func = Symbol('myCall');
+  context[func] = this;
+  result = context[func](...args);
+  delete context[func];
   return result;
 };

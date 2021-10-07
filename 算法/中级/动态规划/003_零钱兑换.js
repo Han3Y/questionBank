@@ -4,8 +4,9 @@
  你可以认为每种硬币的数量是无限的。
 
  */
-
+let coins = [1, 2, 5];
+let amount = 11;
 
 function f1(coins, amount) {
-    
+
 }

@@ -19,15 +19,8 @@ Function.prototype.myBind = function (context) {
 
         },
         Fn = function () {
-            console.log('this:', this);
-            if (this instanceof fn && context) {
-                console.log('111');
-            } else {
-                console.log('222');
-            }
             return that.apply(this instanceof fn ? this : context, args.concat([...arguments]));
         };
-    console.log('that:', that);
     fn.prototype = this.prototype;
     Fn.prototype = new fn();
     return Fn;

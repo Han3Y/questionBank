@@ -9,10 +9,34 @@
  
  */
 
+let matrix = [[1,1,1],[1,0,1],[1,1,1]];
 /**
  *
  * @param matrix
  */
 function f1(matrix) {
-
+    let outLen = matrix.length;
+    let innerLen = matrix[0].length;
+    for(let i = 0; i < outLen; i ++){
+        for(let j = 0; j < innerLen; j ++){
+            if(matrix[i][j] === 0){
+                for(let k = 0; k < innerLen; k ++){
+                    matrix[i][k] = 2;
+                }
+                for(let k = 0; k < outLen; k ++){
+                    matrix[k][j] = 2;
+                }
+            }
+        }
+    }
+    for(let i = 0; i < outLen; i ++) {
+        for (let j = 0; j < innerLen; j++) {
+            if(matrix[i][j] === 2){
+                matrix[i][j] = 0;
+            }
+        }
+    }
 }
+
+f1(matrix);
+console.log(matrix);

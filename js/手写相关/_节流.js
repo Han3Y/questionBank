@@ -13,7 +13,7 @@ function throttle(fn, delay) {
     };
 }
 
-// 第一次不执行
+//
 function throttle2(fn, delay) {
     let timer = null;
     let startTime = Date.now();

@@ -17,15 +17,16 @@ Function.prototype.myApply = function (context) {
     context = context || window;
     let args = arguments[1],
         result = null;
-    context.fn = this;
+    let func = Symbol('myApply');
+    context[func] = this;
     if(args && !(args instanceof Array)){
         throw 'error'
     }
     if(args){
-        result = context.fn(...args);
+        result = context[func](...args);
     }else {
-        result = context.fn();
+        result = context[func]();
     }
-    delete context.fn;
+    delete context[func];
     return result;
 };
