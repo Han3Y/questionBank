@@ -17,7 +17,7 @@ const jsonp = function (url, data) {
         if (data) {
             // 有请求参数，依次添加到url
             for (let k in data) {
-                url += `${k}=${data[k]}`
+                url += `&${k}=${data[k]}`
             }
         }
         let jsNode = document.createElement('script')

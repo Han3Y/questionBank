@@ -15,3 +15,5 @@ function SubType() {
 
 SubType.prototype = Object.create(SuperType.prototype)
 SubType.prototype.constructor = SubType;
+
+
