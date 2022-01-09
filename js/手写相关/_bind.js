@@ -15,14 +15,10 @@ Function.prototype.myBind = function (context) {
     }
     let args = [...arguments].slice(1),
         that = this,
-        fn = function () {
-
-        },
         Fn = function () {
-            return that.apply(this instanceof fn ? this : context, args.concat([...arguments]));
+            return that.apply(this instanceof Fn ? this : context, args.concat([...arguments]));
         };
-    fn.prototype = this.prototype;
-    Fn.prototype = new fn();
+    Fn.prototype = Object.create(this.prototype);
     return Fn;
 };
 
@@ -38,3 +34,13 @@ let testFn = test.myBind();
 // obj.testFn()
 
 new testFn()
+
+var length = 10;
+function fn (){
+    console.log(this.length);
+}
+let arr = [fn, 1];
+fn();
+// 会隐式绑定
+arr[0]();
+

@@ -7,11 +7,11 @@
 logo，给logo 图片添加h1 标签、a 链接连接到首页以及alt
 
 ### <h1>
-// 这个href 应该是要写线上的首页地址，比项目目录地址要好
-<a href="https://xxx">
-<img src="images/logo.png" alt="html 对seo 的优化"/>
-</a>
-</h1>
+    // 这个href 应该是要写线上的首页地址，比项目目录地址要好
+    <a href="https://xxx">
+    <img src="images/logo.png" alt="html 对seo 的优化"/>
+    </a>
+    </h1>
 
 ### img 标签，img 标签增加alt 属性
 

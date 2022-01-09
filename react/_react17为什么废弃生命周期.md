@@ -1,0 +1,1 @@
+## componentWillMount，componentwillReceiveProps，componentWillUpdate

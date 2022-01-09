@@ -21,3 +21,16 @@ function myNew() {
         return newObj;
     }
 }
+
+function Player(name){
+    this.name = name;
+    return function test(){
+
+    }
+}
+console.log(typeof Player)
+console.log(typeof {})
+console.log(Object.prototype)
+
+let p1 = new Player('hjc');
+console.log(p1);
