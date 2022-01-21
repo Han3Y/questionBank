@@ -12,3 +12,13 @@ function unique(arr) {
     arr.length = slow;
     return arr;
 }
+
+// 用set
+function unique1(arr){
+    return [...new Set(arr)]
+}
+
+let arr1 = [1,2,2,3,3,4];
+
+console.log(unique1(arr1))
+console.log(unique(arr1))
